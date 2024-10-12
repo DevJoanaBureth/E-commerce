@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Log out!
+{% endblock %}
+
+{% block body %}
+	<style>
+		.example-wrapper {
+			margin: 1em auto;
+			max-width: 800px;
+			width: 95%;
+			font: 18px / 1.5 sans-serif;
+		}
+	</style>
+
+	<div class="example-wrapper">
+		<h1>You have Log out. See you later!</h1>
+
+		<a href="{{ path('app_home') }}">Return Home</a>
+	</div>
+{% endblock %}
