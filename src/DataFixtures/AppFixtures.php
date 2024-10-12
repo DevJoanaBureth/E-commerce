@@ -19,11 +19,33 @@ class AppFixtures extends Fixture
     public function load(ObjectManager $manager): void
     {
         $user = new User();
-        $user->setNom('Bureth')->setPrenom('Joana')->setEmail('brth.joana@gmail.com')->setRoles(['ROLES_USER']);
-        $encoded = $this->encoder->hashPassword($user, '123');
-        $user->setPassword($encoded);
+        $encodedUser = $this->encoder->hashPassword($user, '123');
+        $user->setNom('Bureth')
+        ->setPrenom('Joana')
+        ->setEmail('brth.joana@gmail.com')
+        ->setRoles(['ROLES_USER'])
+        ->setPassword($encodedUser);
+
+        $admin = new User();
+        $encodedAdmin = $this->encoder->hashPassword($admin, '123');
+        $admin->setNom('Bureth')
+        ->setPrenom('Joana')
+        ->setEmail('admin@gmail.com')
+        ->setRoles(['ROLES_ADMIN'])
+        ->setPassword($encodedAdmin);
+
+        $employee = new User();
+        $encodedEmployee = $this->encoder->hashPassword($employee, '123');
+        $employee->setNom('Doe')
+        ->setPrenom('John')
+        ->setEmail('john.doe@gmail.com')
+        ->setRoles(['ROLES_EMPLOYEE'])
+        ->setPassword($encodedEmployee);
 
         $manager->persist($user);
+        $manager->persist($admin);
+        $manager->persist($employee);
+
         $manager->flush();
     }
 }
