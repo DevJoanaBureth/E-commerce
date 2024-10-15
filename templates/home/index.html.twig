@@ -21,24 +21,8 @@
 		<h1>Hello
 			{{ controller_name }}! ✅</h1>
 
-		This friendly message is coming from:
-		<ul>
-			<li>Your controller at
-				<code>C:/laragon/www/symfony6/src/Controller/HomeController.php</code>
-			</li>
-			<li>Your template at
-				<code>C:/laragon/www/symfony6/templates/home/index.html.twig</code>
-			</li>
-		</ul>
-
 		<div>
 			<a href="{{ path('app_contact') }}">Contact me</a>
 		</div>
-
-		<div>
-			<a href="{{ path('app_login') }}">Log in</a>
-			<a href="{{ path('app_logout') }}">Log out</a>
-		</div>
-
 	</div>
 {% endblock %}
