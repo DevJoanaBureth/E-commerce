@@ -23,8 +23,8 @@ class ProductType extends AbstractType
             ->add('category', EntityType::class, [
                 'class' => Category::class,
                 'choice_label' => 'name',
-                'placeholder' => 'Choisir une catégorie',
-                'label' => 'Catégorie'
+                'placeholder' => 'Choose a category',
+                'label' => 'Category'
             ])
 
             ->add('save', SubmitType::class);

@@ -7,6 +7,7 @@ use App\Form\CategoryType;
 use App\Repository\CategoryRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -29,12 +30,31 @@ class CategoryController extends AbstractController
         $form = $this->createForm(CategoryType::class, $category);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($category);
-            $entityManager->flush();
+        $path = $this->getParameter('app.dir.public'). 'uploads/';
 
+        if ($form->isSubmitted() && $form->isValid()) {
+            $file = $form['image']->getData();
+            
+            if ($file) {
+                $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+                $newName = 'uploads/' . $originalName . '-' . uniqid() . '.' . $file->guessExtension();
+                $category->setImage($newName);
+                
+                try {
+                    $file->move($path, $newName);
+                } catch (FileException $e) {
+                    echo $e->getMessage();
+                }
+                
+                $entityManager->persist($category);
+                $entityManager->flush();
+            }
+        
+            $this->addFlash('success', 'Category added with success.');
+        
             return $this->redirectToRoute('app_category_index', [], Response::HTTP_SEE_OTHER);
         }
+        
 
         return $this->render('category/new.html.twig', [
             'category' => $category,
@@ -59,6 +79,8 @@ class CategoryController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
+            $this->addFlash('success','Category updated with success');
+
             return $this->redirectToRoute('app_category_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -76,6 +98,7 @@ class CategoryController extends AbstractController
             $entityManager->flush();
         }
 
+        $this->addFlash('success','Category deleted with success');
         return $this->redirectToRoute('app_category_index', [], Response::HTTP_SEE_OTHER);
     }
 }
