@@ -23,7 +23,7 @@ class AppFixtures extends Fixture
         $user->setNom('Bureth')
         ->setPrenom('Joana')
         ->setEmail('brth.joana@gmail.com')
-        ->setRoles(['ROLES_USER'])
+        ->setRoles(['ROLE_USER'])
         ->setPassword($encodedUser);
 
         $admin = new User();
@@ -31,7 +31,7 @@ class AppFixtures extends Fixture
         $admin->setNom('Bureth')
         ->setPrenom('Joana')
         ->setEmail('admin@gmail.com')
-        ->setRoles(['ROLES_ADMIN'])
+        ->setRoles(['ROLE_ADMIN'])
         ->setPassword($encodedAdmin);
 
         $employee = new User();
@@ -39,7 +39,7 @@ class AppFixtures extends Fixture
         $employee->setNom('Doe')
         ->setPrenom('John')
         ->setEmail('john.doe@gmail.com')
-        ->setRoles(['ROLES_EMPLOYEE'])
+        ->setRoles(['ROLE_EMPLOYEE'])
         ->setPassword($encodedEmployee);
 
         $manager->persist($user);
