@@ -1,39 +1,41 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Message index{% endblock %}
+{% block title %}Messages
+{% endblock %}
 
 {% block body %}
-    <h1>Message index</h1>
+	<style>
+		.example-wrapper {
+			margin: 1em auto;
+			max-width: 800px;
+			width: 95%;
+			font: 18px / 1.5 sans-serif;
+		}
+	</style>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Email</th>
-                <th>Telephone</th>
-                <th>Message</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for message in messages %}
-            <tr>
-                <td>{{ message.id }}</td>
-                <td>{{ message.email }}</td>
-                <td>{{ message.telephone }}</td>
-                <td>{{ message.message }}</td>
-                <td>
-                    <a href="{{ path('app_message_show', {'id': message.id}) }}">show</a>
-                    <a href="{{ path('app_message_edit', {'id': message.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="5">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+	<div class="example-wrapper">
+		<h1>Messages</h1>
 
-    <a href="{{ path('app_message_new') }}">Create new</a>
+		<ul>
+			{% for msg in messages %}
+				<li>
+					<strong>{{ msg.message }}</strong>
+					-
+					<em>{{ msg.email }}</em>
+
+					{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_EMPLOYEE') %}
+						<a href="{{ path('app_message_delete', {'id': msg.id}) }}" onclick="return confirm('Are you sure you want to delete this message?');">Delete</a>
+					{% endif %}
+				</li>
+			{% else %}
+				<li>No messages available.</li>
+			{% endfor %}
+		</ul>
+
+		<a aria-current="page" href="/message/new">New Message</a>
+
+		{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_EMPLOYEE') %}
+			<a aria-current="page" href="/edit">Edit Message</a>
+		{% endif %}
+	</div>
 {% endblock %}

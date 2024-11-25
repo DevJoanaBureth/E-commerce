@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello ProductController!
+{% block title %}Product
 {% endblock %}
 
 {% block body %}
@@ -11,11 +11,50 @@
 			width: 95%;
 			font: 18px / 1.5 sans-serif;
 		}
+		.product-list {
+			display: flex;
+			flex-wrap: wrap;
+		}
+		.product-item {
+			margin: 1em;
+			padding: 1em;
+			width: 30%;
+			box-sizing: border-box;
+		}
+		.product-item h2 {
+			font-size: 1.5em;
+		}
+		.product-item p {
+			margin: 0.5em 0;
+		}
 	</style>
 
 	<div class="example-wrapper">
-		<h1>Hello
-			{{ controller_name }}! 🧺</h1>
+		<h1>Product</h1>
 
+		{% if products is not empty %}
+			<div class="product-list">
+				{% for product in products %}
+					<ul class="product-item">
+						<li>
+							<h2>{{ product.name }}</h2>
+							<p>
+								<strong>Description:</strong>
+								{{ product.description }}</p>
+							<p>
+								<strong>Price:</strong>
+								${{ product.price }}</p>
+						</li>
+					</ul>
+				{% endfor %}
+			</div>
+		{% else %}
+			<p>No products available.</p>
+		{% endif %}
+
+		{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_EMPLOYEE') %}
+			<a aria-current="page" href="/new">New Category</a>
+			<a aria-current="page" href="/edit">Edit Category</a>
+		{% endif %}
 	</div>
 {% endblock %}

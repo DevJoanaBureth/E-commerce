@@ -1,5 +1,7 @@
 <?php
 
+// src/Controller/ProductController.php
+
 namespace App\Controller;
 
 use App\Entity\Product;
@@ -13,32 +15,37 @@ use Symfony\Component\Routing\Annotation\Route;
 class ProductController extends AbstractController
 {
     #[Route('/product', name: 'app_product')]
-    public function index(): Response
+    public function index(EntityManagerInterface $manager): Response
     {
+        // Récupérer tous les produits depuis la base de données
+        $products = $manager->getRepository(Product::class)->findAll();
+
+        // Passer les produits à la vue
         return $this->render('product/index.html.twig', [
-            'controller_name' => 'ProductController',
+            'products' => $products, // Passer la liste des produits
         ]);
     }
 
     #[Route('/product/add', name: 'app_add_product')]
     public function add(Request $request, EntityManagerInterface $manager): Response
     {
-
-        // Charger le formulaire
+        // Créer un nouveau produit
         $product = new Product();
         $form = $this->createForm(ProductType::class, $product);
 
         $form->handleRequest($request);
 
-        if($form->isSubmitted()&&$form->isValid())
-        {
+        // Si le formulaire est soumis et valide
+        if ($form->isSubmitted() && $form->isValid()) {
+            // Sauvegarder le produit
             $manager->persist($product);
             $manager->flush();
 
+            // Rediriger vers la liste des produits après ajout
             return $this->redirectToRoute('app_product');
-        };
+        }
 
-        // Primo rendu
+        // Rendu initial du formulaire d'ajout
         return $this->render('product/add.html.twig', [
             'form' => $form->createView(),
         ]);

@@ -11,18 +11,35 @@
 			width: 95%;
 			font: 18px / 1.5 sans-serif;
 		}
+		.category-list {
+			display: flex;
+			flex-wrap: wrap;
+		}
+		.category-item {
+			margin: 1em;
+			padding: 1em;
+			width: 30%;
+			box-sizing: border-box;
+		}
+		.category-item p {
+			margin: 0.5em 0;
+		}
 	</style>
 
 	<div class="example-wrapper">
 		<h1>Category</h1>
 
-		<ul>
-			{% for category in categories %}
-				<li>{{ category.name }}</li>
-			{% else %}
-				<li>No categories available.</li>
-			{% endfor %}
-		</ul>
+		{% if categories is not empty %}
+			<div class="category-list">
+				{% for category in categories %}
+					<ul class="category-item">
+						<li>{{ category.name }}</li>
+					</ul>
+				{% endfor %}
+			</div>
+		{% else %}
+			<p>No categories available.</p>
+		{% endif %}
 
 		{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_EMPLOYEE') %}
 			<a aria-current="page" href="/new">New Category</a>

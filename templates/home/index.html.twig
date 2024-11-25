@@ -18,10 +18,14 @@
 	</style>
 
 	<div class="example-wrapper">
-		<h1>Welcom to Ecommerce</h1>
+		<h1>Welcome to E-commerce</h1>
 
+		{% if is_granted('ROLE_ADMIN') %}
+			<p>Welcome ADMIN!</p>
+		{% endif %}
 		<div>
 			<a href="{{ path('app_contact') }}">Contact me</a>
 		</div>
+
 	</div>
 {% endblock %}

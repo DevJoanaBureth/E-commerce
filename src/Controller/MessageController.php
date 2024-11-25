@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/message')]
 class MessageController extends AbstractController
 {
-    #[Route('/', name: 'app_message_index', methods: ['GET'])]
+    #[Route('/', name: 'app_message_index')]
     public function index(MessageRepository $messageRepository): Response
     {
         return $this->render('message/index.html.twig', [
@@ -68,7 +68,7 @@ class MessageController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_message_delete', methods: ['POST'])]
+    #[Route('/{id}/delete', name: 'app_message_delete')]
     public function delete(Request $request, Message $message, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$message->getId(), $request->request->get('_token'))) {
