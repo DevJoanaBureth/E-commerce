@@ -1,41 +1,32 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Category index{% endblock %}
+{% block title %}Category
+{% endblock %}
 
 {% block body %}
-    <h1>Category index</h1>
+	<style>
+		.example-wrapper {
+			margin: 1em auto;
+			max-width: 800px;
+			width: 95%;
+			font: 18px / 1.5 sans-serif;
+		}
+	</style>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>Description</th>
-                <th>Image</th>
-                <th>Date_add</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for category in categories %}
-            <tr>
-                <td>{{ category.id }}</td>
-                <td>{{ category.name }}</td>
-                <td>{{ category.description }}</td>
-                <td>{{ category.image }}</td>
-                <td>{{ category.dateAdd ? category.dateAdd|date('Y-m-d H:i:s') : '' }}</td>
-                <td>
-                    <a href="{{ path('app_category_show', {'id': category.id}) }}">show</a>
-                    <a href="{{ path('app_category_edit', {'id': category.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="6">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+	<div class="example-wrapper">
+		<h1>Category</h1>
 
-    <a href="{{ path('app_category_new') }}">Create new</a>
+		<ul>
+			{% for category in categories %}
+				<li>{{ category.name }}</li>
+			{% else %}
+				<li>No categories available.</li>
+			{% endfor %}
+		</ul>
+
+		{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_EMPLOYEE') %}
+			<a aria-current="page" href="/new">New Category</a>
+			<a aria-current="page" href="/edit">Edit Category</a>
+		{% endif %}
+	</div>
 {% endblock %}

@@ -1,11 +1,19 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New Message{% endblock %}
+{% block title %}Leave a message
+{% endblock %}
 
 {% block body %}
-    <h1>Create new Message</h1>
+	<h1>Leave a message</h1>
 
-    {{ include('message/_form.html.twig') }}
+	{% for message in app.flashes('success') %}
+		<div class="alert alert-success">
+			{{ message }}
+		</div>
+	{% endfor %}
 
-    <a href="{{ path('app_message_index') }}">back to list</a>
+	{{ form_start(form) }}
+	{{ form_widget(form) }}
+	<button class="btn btn-primary">Send</button>
+	{{ form_end(form) }}
 {% endblock %}
